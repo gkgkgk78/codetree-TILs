@@ -1,6 +1,7 @@
-#2시간
+#2시간 5분
 import sys
 from collections import deque
+
 input = sys.stdin.readline
 
 # 애초에 공격력이 0인 포탑이 존재 가능함
@@ -156,6 +157,13 @@ def attacks(attack, gone):
     visit = bomb(attack[0], attack[1], gone[0], gone[1])
     growth(visit)
 
+def check():
+    co=0
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] > 0:
+                co+=1
+    return co
 
 for tt in range(k):
     ttt = graph
@@ -163,7 +171,8 @@ for tt in range(k):
     gone = attacked(attack[0], attack[1])
     portal[attack[0]][attack[1]] = tt+1  # 공격자 공격한거 갱신
     attacks(attack, gone)
-
+    if check()==1:
+        break
 answer = -1
 for i in range(n):
     for j in range(m):
