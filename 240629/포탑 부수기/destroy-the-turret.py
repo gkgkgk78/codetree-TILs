@@ -1,6 +1,7 @@
-#2시간 5분
+#2시간 32분
 import sys
 from collections import deque
+import heapq
 
 input = sys.stdin.readline
 
@@ -115,8 +116,6 @@ def bomb(gx, gy, tx, ty):
     for i in range(len(dx)):
         zx = dx[i] + tx
         zy = dy[i] + ty
-        if zx == gx and zy == gy:
-            continue
         if not (0 <= zx < n and 0 <= zy < m):
             # 좌표 변환 해야함
             if zy >= m:
@@ -127,12 +126,16 @@ def bomb(gx, gy, tx, ty):
                 zx = n - 1
             if zx >= n:
                 zx = 0
+        if zx == gx and zy == gy:
+            continue
         if graph[zx][zy] == 0:
             continue
         if zx==tx and zy==ty:
             graph[zx][zy] -= graph[gx][gy]
         else:
             graph[zx][zy] -= graph[gx][gy] // 2
+        if graph[zx][zy]<=0:
+            graph[zx][zy]=0
         visit[zx][zy] = 1
     return visit
 
@@ -166,13 +169,14 @@ def check():
     return co
 
 for tt in range(k):
-    ttt = graph
+    if check()==1:
+        break
     attack = get_attacker()
     gone = attacked(attack[0], attack[1])
     portal[attack[0]][attack[1]] = tt+1  # 공격자 공격한거 갱신
     attacks(attack, gone)
-    if check()==1:
-        break
+
+
 answer = -1
 for i in range(n):
     for j in range(m):
