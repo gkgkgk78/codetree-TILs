@@ -1,4 +1,4 @@
-#1시간 38분
+#2시간
 import sys
 from collections import deque
 input = sys.stdin.readline
@@ -83,6 +83,8 @@ def go(gx, gy, tx, ty):
     if visit[tx][ty] != 0:
         # 이제 점수 깎으면 됨
         graph[tx][ty] -= graph[gx][gy]
+        visit=[[0] * m for _ in range(n)]
+        visit[tx][ty]=1
         delete(tx, ty, gx, gy, visit, graph[gx][gy], path)
         if graph[tx][ty] <= 0:
             graph[tx][ty] = 0
@@ -93,29 +95,14 @@ def go(gx, gy, tx, ty):
 
 def delete(gx, gy, tx, ty, visited, tack, path):
     # 부서진 포탑 있을시 지나지 못한다
-    dx = [-1, 0, 1, 0]
-    dy = [0, -1, 0, 1]
-    for i in range(4):
-        zx = dx[i] + gx
-        zy = dy[i] + gy
-        if gx == tx and gy == ty:
-            return
-        if not (0 <= zx < n and 0 <= zy < m):
-            # 좌표 변환 해야함
-            if zy >= m:
-                zy = 0
-            if zy < 0:
-                zy = m - 1
-            if zx < 0:
-                zx = n - 1
-            if zx >= n:
-                zx = 0
-        if graph[zx][zy] > 0 and visited[zx][zy] == visited[gx][gy] - 1 and path[gx][gy] == [zx, zy]:
-            graph[zx][zy] -= tack // 2
-            if graph[zx][zy] <= 0:
-                graph[zx][zy] = 0
-            delete(zx, zy, tx, ty, visited, tack, path)
-            return
+    [zx, zy] = path[gx][gy]
+    visited[zx][zy]=1
+    if zx==tx and zy==ty:
+        return
+    graph[zx][zy] -= tack // 2
+    if graph[zx][zy] <= 0:
+        graph[zx][zy] = 0
+    delete(zx, zy, tx, ty, visited, tack, path)
 
 
 def bomb(gx, gy, tx, ty):
@@ -123,11 +110,11 @@ def bomb(gx, gy, tx, ty):
     dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1]
     dy = [-1, 0, 1, -1, 0, 1, -1, 0, 1]
     visit = [[0] * m for _ in range(n)]
-    visit[tx][ty] = 1
+    visit[gx][gy] = 1
     for i in range(len(dx)):
-        zx = dx[i] + gx
-        zy = dy[i] + gy
-        if zx == tx and zy == ty:
+        zx = dx[i] + tx
+        zy = dy[i] + ty
+        if zx == gx and zy == gy:
             continue
         if not (0 <= zx < n and 0 <= zy < m):
             # 좌표 변환 해야함
@@ -141,7 +128,10 @@ def bomb(gx, gy, tx, ty):
                 zx = 0
         if graph[zx][zy] == 0:
             continue
-        graph[zx][zy] -= graph[tx][ty] // 2
+        if zx==tx and zy==ty:
+            graph[zx][zy] -= graph[gx][gy]
+        else:
+            graph[zx][zy] -= graph[gx][gy] // 2
         visit[zx][zy] = 1
     return visit
 
@@ -171,7 +161,7 @@ for tt in range(k):
     ttt = graph
     attack = get_attacker()
     gone = attacked(attack[0], attack[1])
-    portal[attack[0]][attack[1]] = tt  # 공격자 공격한거 갱신
+    portal[attack[0]][attack[1]] = tt+1  # 공격자 공격한거 갱신
     attacks(attack, gone)
 
 answer = -1
