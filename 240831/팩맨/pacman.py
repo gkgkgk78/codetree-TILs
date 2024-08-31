@@ -1,5 +1,5 @@
+#1시간 42분
 import sys
-
 from collections import deque
 import heapq
 
@@ -169,25 +169,9 @@ for a in range(t):
 
     # 몬스터 복제완성
     make_monster()
-    #
-    # print(a)
-    # print("몬스터")
-    # for i in monster_graph:
-    #     print(i)
-    # print("팩맨")
-    # print(pack_x,pack_y)
-    # #죽은
-    # print("죽은")
-    # for i in death_graph:
-    #     print(i)
-    # print("알")
-    # for i in egg_graph:
-    #     print(i)
-
 
 
 answer = 0
-
 for i in range(4):
     for j in range(4):
         now = monster_graph[i][j]
