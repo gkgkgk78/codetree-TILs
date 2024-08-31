@@ -103,7 +103,7 @@ def eat_monster(ind):
         pack_x = pack_x + dx[i]
         pack_y = pack_y + dy[i]
         for k in monster_graph[pack_x][pack_y]:
-            death_graph[pack_x][pack_y].append(2)
+            death_graph[pack_x][pack_y].append(3)
         monster_graph[pack_x][pack_y] = []
 
 
