@@ -60,7 +60,6 @@ def move_monster():
     for i in range(4):
         for j in range(4):
             for k in monster_graph[i][j]:
-
                 now = k
                 find = 0
                 for l in range(8):
@@ -77,13 +76,13 @@ def move_monster():
                     temp[zx][zy].append(now)
                 else:
                     # 지금 자리 유지
-                    temp[i][j].append(now)
+                    temp[i][j].append(k)
     monster_graph = temp
 
 
 pack_move_route = []
-dx = [-1, 1, 0, 0]  # 상하좌우로 움직인다
-dy = [0, 0, -1, 1]
+dx = [-1,0,1,0]  # 상좌하우로 움직인다
+dy = [0,-1,0,1]
 
 
 def make_pack_move_route():
@@ -117,8 +116,6 @@ def move_pack():
         zy = pack_y
         tt = []
         for k in range(3):
-            if i == 49:
-                i = 49
             now = pack_move_route[i][k]
             zx += dx[now]
             zy += dy[now]
@@ -157,7 +154,7 @@ def make_monster():
     egg_graph = [[[] for _ in range(4)] for _ in range(4)]
 
 
-for _ in range(t):
+for a in range(t):
     # 몬스터 복제 시도
     copy_monster()
 
@@ -172,6 +169,22 @@ for _ in range(t):
 
     # 몬스터 복제완성
     make_monster()
+    #
+    # print(a)
+    # print("몬스터")
+    # for i in monster_graph:
+    #     print(i)
+    # print("팩맨")
+    # print(pack_x,pack_y)
+    # #죽은
+    # print("죽은")
+    # for i in death_graph:
+    #     print(i)
+    # print("알")
+    # for i in egg_graph:
+    #     print(i)
+
+
 
 answer = 0
 
