@@ -87,10 +87,10 @@ def check_up(row, index, visit):
 
 
 def check_down(row, index, visit):
-    if row + l >= n:
+    if row + l-1 >= n:
         return 0
-    now = row + 1
-    before = graph[row][index]
+    now = row
+    before = graph[row-1][index]
     for i in range(l):
         if graph[now][index] == before - 1 and visit[now] == 0:
             now += 1
@@ -118,7 +118,7 @@ def check_col(index):
                 check = check_up(start, index, visit)
                 if (check == 0):
                     return
-                test = start - 1
+                test = start
                 for i in range(l):
                     visit[test] = 1
                     test -= 1
@@ -132,7 +132,7 @@ def check_col(index):
                     visit[test] = 1
                     test += 1
                 start += l
-        before = graph[index][start]
+        before = graph[start][index]
     answer += 1
 
 
