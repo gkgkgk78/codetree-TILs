@@ -9,7 +9,7 @@ for _ in range(n):
 
 
 def check_left(row, index, visit):
-    if index - l < 0:
+    if index+1 - l < 0:
         return 0
     now = index - 1
     before = graph[row][index]
@@ -23,7 +23,7 @@ def check_left(row, index, visit):
 
 
 def check_right(row, index, visit):
-    if index + 1 + l >= n:
+    if index + l >= n:
         return 0
     now = index + 1
     before = graph[row][index]
