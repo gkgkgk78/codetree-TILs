@@ -111,8 +111,12 @@ def delete(q):
             else:
                 temp.append(now)
                 size+=1
-        while temp:
-            origin.append(temp.popleft())
+        if len(temp) < 4:
+            while temp:
+                origin.append(temp.popleft())
+        elif len(temp) >= 4:
+            check = 1
+            answer += before * size
         q=origin
         if check==0:
             break
@@ -145,7 +149,6 @@ for _ in range(m):
     a1, a2 = map(int, input().split())
     # 공격
     attack(a1, a2)
-
     # 빈공간 채우기
     now=get()
     # 몬스터의 종류가 4번이상 반복되면 삭제
