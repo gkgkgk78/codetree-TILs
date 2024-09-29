@@ -83,10 +83,11 @@ def move_last(index):
     if gun != 0:
         guns[x][y].append(gun)
     check = guns[x][y]
-    check.sort(reverse=True)
-    gun = check[0]
-    check = check[1:]
-    guns[x][y] = check
+    if len(check) > 0:
+        check.sort(reverse=True)
+        gun = check[0]
+        check = check[1:]
+        guns[x][y] = check
     players[index] = (x, y, d, s, gun, live)
     players_graph[x][y]=[index]
 
