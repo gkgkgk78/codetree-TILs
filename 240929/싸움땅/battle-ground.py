@@ -11,6 +11,8 @@ answer = [0] * (m)
 for i in range(n):
     now=list(map(int, input().split()))
     for j in range(n):
+        if now[j]==0:
+            continue
         guns[i][j].append(now[j])
 for i in range(m):
     x, y, d, s = map(int, input().split())
@@ -21,7 +23,7 @@ for i in range(m):
 def go(x, y, d):
     zx = x + dx[d]
     zy = y + dy[d]
-    if 0 <= zx < n and 0 <= zy < m:
+    if 0 <= zx < n and 0 <= zy < n:
         return [zx, zy, d]
     else:
         d = (d + 2) % 4
@@ -49,7 +51,8 @@ def fight(x, y):
 def move_loser(index):
     x, y, d, s, gun, live = players[index]
     players_graph[x][y]=[]
-    guns[x][y].append(gun)
+    if gun!=0:
+        guns[x][y].append(gun)
     gun = 0
     zx = x + dx[d]
     zy = y + dy[d]
@@ -72,6 +75,7 @@ def move_loser(index):
         check = check[1:]
         guns[x][y] = check
     players[index] = (x, y, d, s, gun, live)
+    players_graph[x][y]=[index]
 
 def move_last(index):
     x, y, d, s, gun, live = players[index]
@@ -101,8 +105,8 @@ def move(index):
             gun = check[0]
             check = check[1:]
             guns[x][y] = check
-            players[index] = (x, y, d, s, gun, live)
-            players_graph[x][y]=[index]
+        players[index] = (x, y, d, s, gun, live)
+        players_graph[x][y]=[index]
 
     else:
         # 싸워야 함
@@ -113,6 +117,7 @@ def move(index):
         loser=players[loser_index]
         answer[winner_index] += (winner[3] + winner[4]) - (loser[3] + loser[4])
         # 진플레이어 부터 처리 해야함
+        nn=guns
         move_loser(loser_index)
         zx, zy, zd, zs, zgun, zlive = players[winner_index]
         players[winner_index]=(x,y,zd, zs, zgun, zlive)
@@ -122,9 +127,13 @@ def move(index):
 
 for _ in range(k):
     for i in range(m):
-        x, y, d, s, gun, live = players[i]
-        if live == 1:
-            move(i)
+        move(i)
+    # print("guns")
+    # for i in guns:
+    #     print(i)
+    # print("players")
+    # for i in players_graph:
+    #     print(i)
 
 
 print(*answer)
